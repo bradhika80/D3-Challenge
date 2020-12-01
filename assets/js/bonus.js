@@ -42,10 +42,7 @@ function CreateChart()
 
         xValues =[];
         yValues = [];
-        switch (xSelection) 
-        {
-            
-        }      
+      
 
         selectedXYData = { "x" : data.poverty,
                             "y" :data.healthcare,
@@ -148,3 +145,5 @@ function CreateChart()
     });
 
 }
+
+CreateChart();
