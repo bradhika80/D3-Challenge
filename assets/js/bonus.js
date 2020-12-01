@@ -7,7 +7,7 @@ var svgHeight = 500;
 var margin = {
   top: 20,
   right: 40,
-  bottom: 60,
+  bottom: 100,
   left: 150
 };
 
@@ -132,6 +132,8 @@ function CreateChart()
     
 
         // Create axes labels
+
+        // add y label for the healthcare
         chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 100)
@@ -140,6 +142,7 @@ function CreateChart()
         .attr("class", "axisText")
         .text("Lacks Healthcare (%)");
 
+        // add y label for the Smoke
         chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 70)
@@ -148,6 +151,7 @@ function CreateChart()
         .attr("class", "axisText")
         .text("Smoke (%)");
 
+        // add y label for the Obese
         chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 40)
@@ -158,10 +162,27 @@ function CreateChart()
 
 
 
+        // add x label for the poverty
+        var xAxisLabel = "In Poverty (%)";
         chartGroup.append("text")
-        .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + margin.top + 30})`)
+        .attr("transform", `translate(${chartWidth / 2 - (xAxisLabel.length/2 * 5)}, ${chartHeight + margin.top + 30})`)
         .attr("class", "axisText")
-        .text("In Poverty (%)");
+        .text(xAxisLabel);
+
+        // add x label for the Age Median
+        xAxisLabel = "Age (Median)";
+        chartGroup.append("text")
+        .attr("transform", `translate(${chartWidth / 2 - (xAxisLabel.length/2 * 5)}, ${chartHeight + margin.top + 55})`)
+        .attr("class", "axisText")
+        .text(xAxisLabel);
+
+        // add x label for the House hold Median
+        xAxisLabel = "Household Income (Median)";
+        chartGroup.append("text")
+        .attr("transform", `translate(${chartWidth / 2 -  (xAxisLabel.length/2 * 5)}, ${chartHeight + margin.top + 80})`)
+        .attr("class", "axisText")
+        .text(xAxisLabel);
+
     }).catch(function(error) {
         console.log(error);
     });
