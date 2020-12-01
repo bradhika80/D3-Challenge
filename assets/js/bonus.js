@@ -8,12 +8,15 @@ var margin = {
   top: 20,
   right: 40,
   bottom: 60,
-  left: 100
+  left: 150
 };
 
 var chartWidth = svgWidth - margin.left - margin.right;
 var chartHeight = svgHeight - margin.top - margin.bottom;
 
+// set the x and y label selected
+var xLabelSelected = "Poverty";
+var yLabelSelected = "HealthCare";
 
 function CreateChart()
 {
@@ -40,8 +43,7 @@ function CreateChart()
         data.obesity = +data.obesity;
         data.smoke = +data.smoke;
 
-        xValues =[];
-        yValues = [];
+        // select the 
       
 
         dataDict = { "x" : data.poverty,
@@ -108,9 +110,9 @@ function CreateChart()
         // ==============================
         var toolTip = d3.tip()
         .attr("class", "tooltip")
-        .offset([80, -70])
+        .offset([80, -80])
         .html(function(d) {
-            return (`<h5>${d.tip}</h5> <hr/> Poverty : ${d.x}<br>Health Care: ${d.y}`);
+            return (`<h5>${d.tip}</h5> <hr/> ${xLabelSelected} : ${d.x}<br>${yLabelSelected}: ${d.y}`);
         });
 
         // Step 7: Create tooltip in the chart
@@ -132,11 +134,29 @@ function CreateChart()
         // Create axes labels
         chartGroup.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left + 40)
+        .attr("y", 0 - margin.left + 100)
         .attr("x", 0 - (chartHeight / 2))
         .attr("dy", "1em")
         .attr("class", "axisText")
         .text("Lacks Healthcare (%)");
+
+        chartGroup.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left + 70)
+        .attr("x", 0 - (chartHeight / 2))
+        .attr("dy", "1em")
+        .attr("class", "axisText")
+        .text("Smoke (%)");
+
+        chartGroup.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left + 40)
+        .attr("x", 0 - (chartHeight / 2))
+        .attr("dy", "1em")
+        .attr("class", "axisText")
+        .text("Obese (%)");
+
+
 
         chartGroup.append("text")
         .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + margin.top + 30})`)
