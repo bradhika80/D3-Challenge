@@ -37,8 +37,6 @@ function XYScale(data, chosenAxis, axisType) {
             break;
       } 
 
-       
-
     return linearScale;  
   }
   
@@ -59,7 +57,7 @@ function XYScale(data, chosenAxis, axisType) {
 
       // Step 4: transition xaxis
       // ==============================
-      selAxis = selAxis.transition()
+        selAxis.transition()
                     .duration(1000)
                     .call(axis);
 
@@ -86,6 +84,29 @@ function XYScale(data, chosenAxis, axisType) {
     return circlesGroup;
   }
   
+  // function for updating circles text 
+  function renderCircleTextLabels(circleTextGroup, newScale, chosenAxis, axisType) {
+
+    switch(axisType) {
+        case "xAxis":
+            circleTextGroup.transition()
+                    .duration(1000)
+                    .attr("x", d => newScale(d[chosenAxis]))
+                    .attr("cx", "-0.75em")
+                    .attr("cy", "0.25em")
+            break;
+        case "yAxis":  
+        circleTextGroup.transition()
+                .duration(1000)
+                .attr("y", d => newScale(d[chosenAxis]))
+                .attr("cx", "-0.75em")
+                .attr("cy", "0.25em")
+            break;
+      }        
+    return circleTextGroup;
+  }
+  
+
   // function used for updating circles group with new tooltip
   function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
@@ -169,7 +190,7 @@ function XYScale(data, chosenAxis, axisType) {
     .attr("opacity", ".5")
     .attr("stroke", "white");  
 
-    chartGroup.append("text")
+    circleTextGroup = chartGroup.append("text")
     .style("text-anchor", "middle")
     .style("font-size", "8px")
     .selectAll("tspan")
@@ -179,7 +200,7 @@ function XYScale(data, chosenAxis, axisType) {
     .attr("x", d =>  xLinearScale(d[chosenXAxis]))
     .attr("y", d =>  yLinearScale(d[chosenYAxis]))
     .text(function(d) {
-        return d.text
+        return d.abbr
     });
 
     // Step 6: Initialize tool tip
@@ -353,6 +374,8 @@ function XYScale(data, chosenAxis, axisType) {
             // updates circles with new x and y values
             circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, "xAxis");
 
+            // update the circle text with text values
+            chartTextGroup = renderCircleTextLabels(circleTextGroup, xLinearScale, chosenXAxis, "xAxis");
             // updates tooltips with new info
             circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
         
