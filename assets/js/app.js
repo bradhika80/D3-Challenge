@@ -16,7 +16,7 @@ var chartWidth = svgWidth - margin.left - margin.right;
 var chartHeight = svgHeight - margin.top - margin.bottom;
 
 // Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
-var svg = d3.select(".chart")
+var svg = d3.select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
@@ -25,7 +25,7 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Import Data
-d3.csv("data.csv").then(function(healthcareIndicators) {
+d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
 
     // Step 1: Parse Data/Cast as numbers
     // ==============================
