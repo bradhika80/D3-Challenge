@@ -35,7 +35,7 @@ function XYScale(data, chosenAxis, axisType) {
             .range([chartHeight, 0]);
 
             break;
-      } 
+      }
 
     return linearScale;  
   }
@@ -267,7 +267,7 @@ function XYScale(data, chosenAxis, axisType) {
                     .attr("dy", "1em")
                     .classed("inactive", true)
                     .classed("active", false)
-                    .attr("value", "obese")
+                    .attr("value", "obesity")
                     .attr("class", "axisText")
                     .text("Obese (%)");
 
@@ -278,11 +278,25 @@ function XYScale(data, chosenAxis, axisType) {
     // get value of selection
         var value = d3.select(this).attr("value");
         if (value !== chosenYAxis) {
+            console.log(value);
 
-            // replaces chosenXAxis with value
+            // replaces chosenYAxis with value
             chosenYAxis = value;
 
-            
+            // updates y scale for new data
+            yLinearScale = XYScale(healthcareIndicators, chosenYAxis, "yAxis");
+ 
+            // updates y axis with transition
+            yAxis = renderAxes(yLinearScale, yAxis,"yAxis" );
+ 
+            // updates circles with new y values
+            circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis, "yAxis");
+ 
+            // update the circle text with text values
+            chartTextGroup = renderCircleTextLabels(circleTextGroup, yLinearScale, chosenYAxis, "yAxis");
+
+            // updates tooltips with new info
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
         
             // changes classes to change bold text
             switch (chosenYAxis)            
@@ -309,7 +323,7 @@ function XYScale(data, chosenAxis, axisType) {
                         .classed("active", false)
                         .classed("inactive", true);
                     break;
-                case "obese" :
+                case "obesity" :
                     healthLabel
                         .classed("active", false)
                         .classed("inactive", true);
@@ -320,15 +334,14 @@ function XYScale(data, chosenAxis, axisType) {
                         .classed("active", true)
                         .classed("inactive", false);
                     break;
-            }
-            console.log(d[chosenYAxis]);
+            }            
                 
         }
     });
 
 
+    // build labels for x-axis
     var xLabelsGroup = chartGroup.append("g");
-
 
     // add x label for the poverty
     var povertyLabel =  xLabelsGroup.append("text")
@@ -354,12 +367,12 @@ function XYScale(data, chosenAxis, axisType) {
                         .classed("inactive", true)
                         .text("Household Income (Median)");
 
-    
+    // add the on click event listener
     xLabelsGroup.selectAll("text")
         .on("click", function() {
             // get value of selection
         var value = d3.select(this).attr("value");
-        console.log(value)
+        // if value is selected differently, then replot the chart
         if (value !== chosenXAxis) {
 
             // replaces chosenXAxis with value
@@ -376,6 +389,7 @@ function XYScale(data, chosenAxis, axisType) {
 
             // update the circle text with text values
             chartTextGroup = renderCircleTextLabels(circleTextGroup, xLinearScale, chosenXAxis, "xAxis");
+
             // updates tooltips with new info
             circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
         
@@ -417,8 +431,6 @@ function XYScale(data, chosenAxis, axisType) {
                         .classed("inactive", false);
                     break;
             }
-            console.log(chosenXAxis);
-            //CreateChart();
         }
     });
 
