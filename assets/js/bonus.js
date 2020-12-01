@@ -179,6 +179,7 @@ function CreateChart()
                         .attr("x", 0 - (chartHeight / 2))
                         .attr("dy", "1em")
                         .classed("active", true)
+                        .classed("inactive", false)
                         .attr("value", "HealthCare")
                         .attr("class", "axisText")
                         .text("Lacks Healthcare (%)");
@@ -191,6 +192,7 @@ function CreateChart()
                             .attr("x", 0 - (chartHeight / 2))
                             .attr("dy", "1em")
                             .classed("inactive", true)
+                            .classed("active", false)
                             .attr("class", "axisText")
                             .attr("value", "Smoke")
                             .text("Smoke (%)");
@@ -202,6 +204,7 @@ function CreateChart()
                         .attr("x", 0 - (chartHeight / 2))
                         .attr("dy", "1em")
                         .classed("inactive", true)
+                        .classed("active", false)
                         .attr("value", "Obese")
                         .attr("class", "axisText")
                         .text("Obese (%)");
@@ -286,6 +289,59 @@ function CreateChart()
                             .attr("value", "Income") // value to grab for event listener
                             .classed("inactive", true)
                             .text("Household Income (Median)");
+
+        
+        xLabelsGroup.selectAll("text")
+            .on("click", function() {
+                // get value of selection
+            var value = d3.select(this).attr("value");
+            if (value !== xLabelSelected) {
+
+                // replaces chosenXAxis with value
+                xLabelSelected = value;
+            
+                // changes classes to change bold text
+                switch (xLabelSelected)            
+                {
+                    case "Poverty" :
+                        povertyLabel
+                            .classed("active", true)
+                            .classed("inactive", false);
+                        ageLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        incomeLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        break;
+                    case "Age" :
+                        povertyLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        ageLabel
+                            .classed("active", true)
+                            .classed("inactive", false);
+
+                        incomeLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        break;
+                    case "Obese" :
+                        povertyLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        ageLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        incomeLabel
+                            .classed("active", true)
+                            .classed("inactive", false);
+                        break;
+                }
+                console.log(xLabelSelected);
+                //CreateChart();
+            }
+        });
 
 
 
