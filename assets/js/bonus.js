@@ -26,12 +26,12 @@ function XYScale(data, chosenAxis, axisType) {
     switch(axisType) {
         case "xAxis":
             var linearScale = d3.scaleLinear()
-            .domain([d3.min(data, d => d[chosenAxis]) - 1, d3.max(data, d => d[chosenAxis])])
+            .domain([d3.min(data, d => d[chosenAxis]), d3.max(data, d => d[chosenAxis])])
             .range([0, chartWidth]);
           break;
         case "yAxis":  
             var linearScale = d3.scaleLinear()
-            .domain([(d3.min(data, d => d[chosenAxis]) - 1), d3.max(data, d => d[chosenAxis])])
+            .domain([(d3.min(data, d => d[chosenAxis])), d3.max(data, d => d[chosenAxis])])
             .range([chartHeight, 0]);
 
             break;
@@ -140,7 +140,7 @@ function XYScale(data, chosenAxis, axisType) {
     data.income = +data.income;
     data.healthcare = +data.healthcare;
     data.obesity = +data.obesity;
-    data.smoke = +data.smoke;
+    data.smokes = +data.smokes;
     
     });
 
