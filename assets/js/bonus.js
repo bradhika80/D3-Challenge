@@ -169,31 +169,39 @@ function CreateChart()
         // Create axes labels
 
         // add y label for the healthcare
-        chartGroup.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left + 100)
-        .attr("x", 0 - (chartHeight / 2))
-        .attr("dy", "1em")
-        .attr("class", "axisText")
-        .text("Lacks Healthcare (%)");
 
+        var ylabelsGroup = chartGroup.append("g")
+                            .attr("transform", `translate(${width / 2}, ${height + 20})`);
+        
+        var healthLabel = ylabelsGroup.append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 0 - margin.left + 100)
+                        .attr("x", 0 - (chartHeight / 2))
+                        .attr("dy", "1em")
+                        .classed("active", true)
+                        .attr("class", "axisText")
+                        .text("Lacks Healthcare (%)");
+
+        
         // add y label for the Smoke
-        chartGroup.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left + 70)
-        .attr("x", 0 - (chartHeight / 2))
-        .attr("dy", "1em")
-        .attr("class", "axisText")
-        .text("Smoke (%)");
+        var smokeLabel = ylabelsGroup.append("text")
+                            .attr("transform", "rotate(-90)")
+                            .attr("y", 0 - margin.left + 70)
+                            .attr("x", 0 - (chartHeight / 2))
+                            .attr("dy", "1em")
+                            .classed("active", false)
+                            .attr("class", "axisText")
+                            .text("Smoke (%)");
 
         // add y label for the Obese
-        chartGroup.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left + 40)
-        .attr("x", 0 - (chartHeight / 2))
-        .attr("dy", "1em")
-        .attr("class", "axisText")
-        .text("Obese (%)");
+        var obeseLabel = ylabelsGroup.append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 0 - margin.left + 40)
+                        .attr("x", 0 - (chartHeight / 2))
+                        .attr("dy", "1em")
+                        .classed("active", false)
+                        .attr("class", "axisText")
+                        .text("Obese (%)");
 
 
 
