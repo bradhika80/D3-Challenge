@@ -66,16 +66,29 @@ d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
     .append("circle")
     .attr("cx", d => xLinearScale(d.poverty))
     .attr("cy", d => yLinearScale(d.healthcare))
-    .attr("r", "5")
+    .attr("r", "10")
     .attr("fill", "lightblue")
     .attr("opacity", ".5")
     .attr("stroke", "white");  
+
+    chartGroup.append("text")
+    .style("text-anchor", "middle")
+    .style("font-size", "8px")
+    .selectAll("tspan")
+    .data(healthcareIndicators)
+    .enter()
+    .append("tspan")
+    .attr("x", d =>  xLinearScale(d.poverty))
+    .attr("y", d =>  yLinearScale(d.healthcare))
+    .text(function(d) {
+        return d.abbr
+    });
 
     // Step 6: Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
       .attr("class", "tooltip")
-      .offset([80, -60])
+      .offset([80, -70])
       .html(function(d) {
         return (`<h5>${d.state}</h5> <hr/> Poverty : ${d.poverty}<br>Health Care: ${d.healthcare}`);
       });
@@ -93,6 +106,8 @@ d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
       .on("mouseout", function(data, index) {
         toolTip.hide(data);
       });
+
+ 
 
     // Create axes labels
     chartGroup.append("text")
