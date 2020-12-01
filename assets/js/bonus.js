@@ -43,13 +43,48 @@ function CreateChart()
         data.obesity = +data.obesity;
         data.smoke = +data.smoke;
 
-        // select the 
+        var xValue;
+        var yValue;
+
+        // select the attribute bases on the xLabelSelected value
+        switch (xLabelSelected)
+        {
+            case "Poverty" :
+                xValue = data.poverty;
+                break;
+            
+            case "Age" :
+                xValue = data.age;
+                break;
+            
+            case "Income" :
+                xValue = data.income;
+                break;
+            
+        }
+
+        // select the attribute bases on the xLabelSelected value
+        switch (yLabelSelected)
+        {
+            case "HealthCare" :
+                yValue = data.healthcare;
+                break;
+            
+            case "Smoke" :
+                yValue = data.smoke;
+                break;
+            
+            case "Obese" :
+                yValue = data.obesity;
+                break;
+            
+          }
       
 
-        dataDict = { "x" : data.poverty,
-                            "y" :data.healthcare,
-                            "tip" : data.state,
-                            "text" : data.abbr}
+        dataDict = { "x" : xValue,
+                    "y" :yValue,
+                    "tip" : data.state,
+                    "text" : data.abbr}
 
         selectedXYData.push(dataDict);
 
