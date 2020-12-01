@@ -179,6 +179,7 @@ function CreateChart()
                         .attr("x", 0 - (chartHeight / 2))
                         .attr("dy", "1em")
                         .classed("active", true)
+                        .attr("value", "HealthCare")
                         .attr("class", "axisText")
                         .text("Lacks Healthcare (%)");
 
@@ -189,8 +190,9 @@ function CreateChart()
                             .attr("y", 0 - margin.left + 70)
                             .attr("x", 0 - (chartHeight / 2))
                             .attr("dy", "1em")
-                            .classed("active", false)
+                            .classed("inactive", true)
                             .attr("class", "axisText")
+                            .attr("value", "Smoke")
                             .text("Smoke (%)");
 
         // add y label for the Obese
@@ -199,7 +201,8 @@ function CreateChart()
                         .attr("y", 0 - margin.left + 40)
                         .attr("x", 0 - (chartHeight / 2))
                         .attr("dy", "1em")
-                        .classed("active", false)
+                        .classed("inactive", true)
+                        .attr("value", "Obese")
                         .attr("class", "axisText")
                         .text("Obese (%)");
 
@@ -251,31 +254,40 @@ function CreateChart()
                             .classed("inactive", false);
                         break;
                 }
-                CreateChart();
+                console.log(yLabelSelected);
+                //CreateChart();
             }
         });
 
 
+        var xLabelsGroup = chartGroup.append("g");
+    
+
         // add x label for the poverty
-        var xAxisLabel = "In Poverty (%)";
-        chartGroup.append("text")
-        .attr("transform", `translate(${chartWidth / 2 - (xAxisLabel.length/2 * 5)}, ${chartHeight + margin.top + 30})`)
-        .attr("class", "axisText")
-        .text(xAxisLabel);
+        var povertyLabel =  xLabelsGroup.append("text")
+                            .attr("transform", `translate(${chartWidth / 2 }, ${chartHeight + margin.top + 30})`)
+                            .attr("class", "axisText")
+                            .attr("value", "Poverty") // value to grab for event listener
+                            .classed("active", true)
+                            .text("In Poverty (%)");
 
         // add x label for the Age Median
-        xAxisLabel = "Age (Median)";
-        chartGroup.append("text")
-        .attr("transform", `translate(${chartWidth / 2 - (xAxisLabel.length/2 * 5)}, ${chartHeight + margin.top + 55})`)
-        .attr("class", "axisText")
-        .text(xAxisLabel);
+        var ageLabel = xLabelsGroup.append("text")
+                            .attr("transform", `translate(${chartWidth / 2 }, ${chartHeight + margin.top + 55})`)
+                            .attr("class", "axisText")
+                            .attr("value", "Age") // value to grab for event listener
+                            .classed("inactive", true)
+                            .text("Age (Median)");
 
         // add x label for the House hold Median
-        xAxisLabel = "Household Income (Median)";
-        chartGroup.append("text")
-        .attr("transform", `translate(${chartWidth / 2 -  (xAxisLabel.length/2 * 5)}, ${chartHeight + margin.top + 80})`)
-        .attr("class", "axisText")
-        .text(xAxisLabel);
+        var incomeLabel = xLabelsGroup.append("text")
+                            .attr("transform", `translate(${chartWidth / 2 }, ${chartHeight + margin.top + 80})`)
+                            .attr("class", "axisText")
+                            .attr("value", "Income") // value to grab for event listener
+                            .classed("inactive", true)
+                            .text("Household Income (Median)");
+
+
 
     }).catch(function(error) {
         console.log(error);
