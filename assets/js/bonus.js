@@ -18,16 +18,147 @@ var chartHeight = svgHeight - margin.top - margin.bottom;
 var xLabelSelected = "Poverty";
 var yLabelSelected = "HealthCare";
 
+
+
+// builds the dataset based on the selection
+function GetDataset(data){
+    var selectedXYData = [];
+
+    switch (xLabelSelected)
+     {
+         case "Poverty" :
+             xValue = data.poverty;
+             break;
+         
+         case "Age" :
+             xValue = data.age;
+             break;
+         
+         case "Income" :
+             xValue = data.income;
+             break;
+         
+     }
+
+      // select the attribute bases on the xLabelSelected value
+      switch (yLabelSelected)
+      {
+          case "HealthCare" :
+              yValue = data.healthcare;
+              break;
+          
+          case "Smoke" :
+              yValue = data.smoke;
+              break;
+          
+          case "Obese" :
+              yValue = data.obesity;
+              break;
+          
+        }
+    
+
+      dataDict = { "x" : xValue,
+                  "y" :yValue,
+                  "tip" : data.state,
+                  "text" : data.abbr}
+
+      selectedXYData.push(dataDict);
+
+      return (selectedXYData);
+}
+
+// function used for updating x-scale, y-scale var upon click on axis label
+function XYScale(data, chosenXAxis, chosenYAxis) {
+    // create scales
+
+
+     // select the attribute bases on the xLabelSelected value
+    var xLinearScale = d3.scaleLinear()
+        .domain([d3.min(data, d => d[chosenXAxis]) - 1, d3.max(selectedXYData, d => d[chosenXAxis])])
+        .range([0, chartWidth]);
+    
+    // select the attribute bases on the xLabelSelected value
+     var yLinearScale = d3.scaleLinear()
+        .domain([(d3.min(data, d => d[chosenYAxis]) - 1), d3.max(selectedXYData, d => d[chosenYAxis])])
+        .range([chartHeight, 0]);
+
+
+  
+    return xLinearScale, yLinearScale;
+  
+  }
+  
+  // function used for updating xAxis var upon click on axis label
+  function renderAxes(newXScale, xAxis, newYScale, yAxis) 
+  {
+  
+      // Step 3: Create axis functions
+      // ==============================
+      var bottomAxis = d3.axisBottom(newXScale);
+      var leftAxis = d3.axisLeft(newYScale);
+
+      // Step 4: transition xaxis
+      // ==============================
+      xAxis = xAxis.transition()
+                    .duration(1000)
+                    .call(bottomAxis);
+
+      yAxis =  yAxis.transition()
+                    .duration(1000)
+                    .call(leftAxis);
+
+      return xAxis, yAxis;
+  }
+  
+  // function used for updating circles group with a transition to
+  // new circles
+  function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYAxis) {
+  
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("cx", d => newXScale(d[chosenXAxis]))
+      .attr("cy", d => newYScale(d[chosenYAxis]));
+
+      
+  
+    return circlesGroup;
+  }
+  
+  // function used for updating circles group with new tooltip
+  function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+
+    var toolTip = d3.tip()
+      .attr("class", "tooltip")
+      .offset([80, -80])
+      .html(function(d) {
+        return (`<h5>${d.state}</h5> <hr/> ${chosenXAxis} : ${d[chosenXAxis]}<br>${chosenYAxis}: ${d[chosenYAxis]}` `${d.state}<br>${label} ${d[chosenXAxis]}`);
+      });
+  
+    circlesGroup.call(toolTip);
+  
+    circlesGroup.on("mouseover", function(data) {
+      toolTip.show(data);
+    })
+      // onmouseout event
+      .on("mouseout", function(data, index) {
+        toolTip.hide(data);
+      });
+  
+    return circlesGroup;
+  }
+
+
 function CreateChart()
 {
-    // Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
-    var svg = d3.select("#bonus")
-    .append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight);
-
-    var chartGroup = svg.append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+      // Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
+      var svg = d3.select("#bonus")
+      .append("svg")
+      .attr("width", svgWidth)
+      .attr("height", svgHeight);
+  
+      var chartGroup = svg.append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
     selectedXYData = []
     // Import Data
@@ -108,11 +239,11 @@ function CreateChart()
 
         // Step 4: Append Axes to the chart
         // ==============================
-        chartGroup.append("g")
+        var xAxis = chartGroup.append("g")
         .attr("transform", `translate(0, ${chartHeight})`)
         .call(bottomAxis);
 
-        chartGroup.append("g")
+        var yAxis =  chartGroup.append("g")
         .call(leftAxis);
 
         // Step 5: Create Circles
@@ -219,6 +350,8 @@ function CreateChart()
 
                 // replaces chosenXAxis with value
                 yLabelSelected = value;
+
+                
             
                 // changes classes to change bold text
                 switch (yLabelSelected)            
@@ -258,7 +391,7 @@ function CreateChart()
                         break;
                 }
                 console.log(yLabelSelected);
-                //CreateChart();
+                 
             }
         });
 
@@ -299,6 +432,18 @@ function CreateChart()
 
                 // replaces chosenXAxis with value
                 xLabelSelected = value;
+              
+                // updates x scale for new data
+                xLinearScale, yLinearScale = XYScale(healthcareIndicators, xLabelSelected, yLabelSelected);
+
+                // updates x axis with transition
+                xAxis, yAxis = renderAxes(xLinearScale, xAxis, yLinearScale, yAxis );
+
+                // updates circles with new x and y values
+                circlesGroup = renderCircles(circlesGroup, xLinearScale, xLabelSelected, yLinearScale, yLabelSelected);
+
+                // updates tooltips with new info
+                circlesGroup = updateToolTip(xLabelSelected, yLabelSelected, circlesGroup);
             
                 // changes classes to change bold text
                 switch (xLabelSelected)            
@@ -326,7 +471,7 @@ function CreateChart()
                             .classed("active", false)
                             .classed("inactive", true);
                         break;
-                    case "Obese" :
+                    case "Income" :
                         povertyLabel
                             .classed("active", false)
                             .classed("inactive", true);
