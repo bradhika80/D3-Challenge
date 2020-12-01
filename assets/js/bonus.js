@@ -26,7 +26,7 @@ function CreateChart()
     var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    selectedXYData = {}
+    selectedXYData = []
     // Import Data
     d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
 
@@ -44,14 +44,16 @@ function CreateChart()
         yValues = [];
       
 
-        selectedXYData = { "x" : data.poverty,
+        dataDict = { "x" : data.poverty,
                             "y" :data.healthcare,
                             "tip" : data.state,
                             "text" : data.abbr}
 
+        selectedXYData.push(dataDict);
+
         });
 
-     
+     console.log(selectedXYData);
         // Step 2: Create scale functions
         // ==============================
         var xLinearScale = d3.scaleLinear()
