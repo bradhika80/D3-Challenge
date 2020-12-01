@@ -37,11 +37,11 @@ d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
     // Step 2: Create scale functions
     // ==============================
     var xLinearScale = d3.scaleLinear()
-      .domain([20, d3.max(healthcareIndicators, d => d.poverty)])
+      .domain([d3.min(healthcareIndicators, d => d.poverty) - 1, d3.max(healthcareIndicators, d => d.poverty)])
       .range([0, chartWidth]);
 
     var yLinearScale = d3.scaleLinear()
-      .domain([0, d3.max(healthcareIndicators, d => d.healthcare)])
+      .domain([(d3.min(healthcareIndicators, d => d.healthcare) - 1), d3.max(healthcareIndicators, d => d.healthcare)])
       .range([chartHeight, 0]);
 
     // Step 3: Create axis functions
@@ -61,14 +61,15 @@ d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
     // Step 5: Create Circles
     // ==============================
     var circlesGroup = chartGroup.selectAll("circle")
-    .data(hairData)
+    .data(healthcareIndicators)
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d.poverty))
     .attr("cy", d => yLinearScale(d.healthcare))
-    .attr("r", "15")
+    .attr("r", "5")
     .attr("fill", "lightblue")
-    .attr("opacity", ".5");
+    .attr("opacity", ".5")
+    .attr("stroke", "white");  
 
     // Step 6: Initialize tool tip
     // ==============================
@@ -76,7 +77,7 @@ d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
       .attr("class", "tooltip")
       .offset([80, -60])
       .html(function(d) {
-        return (`${d.state}<br>In Poverty : ${d.poverty}<br>Health Care: ${d.healthcare}`);
+        return (`<h5>${d.state}</h5> <hr/> Poverty : ${d.poverty}<br>Health Care: ${d.healthcare}`);
       });
 
     // Step 7: Create tooltip in the chart
@@ -100,12 +101,12 @@ d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
       .attr("x", 0 - (chartHeight / 2))
       .attr("dy", "1em")
       .attr("class", "axisText")
-      .text("Number of Billboard 100 Hits");
+      .text("Lacks Healthcare (%)");
 
     chartGroup.append("text")
       .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + margin.top + 30})`)
       .attr("class", "axisText")
-      .text("Hair Metal Band Hair Length (inches)");
+      .text("In Poverty (%)");
   }).catch(function(error) {
     console.log(error);
   });
