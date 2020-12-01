@@ -165,13 +165,13 @@ function CreateChart()
         });
 
     
+        // reference  :- https://www.dashingd3js.com/lessons/making-dynamic-scales-and-axes
 
         // Create axes labels
 
         // add y label for the healthcare
 
-        var ylabelsGroup = chartGroup.append("g")
-                            .attr("transform", `translate(${width / 2}, ${height + 20})`);
+        var ylabelsGroup = chartGroup.append("g");
         
         var healthLabel = ylabelsGroup.append("text")
                         .attr("transform", "rotate(-90)")
@@ -203,6 +203,57 @@ function CreateChart()
                         .attr("class", "axisText")
                         .text("Obese (%)");
 
+        
+        // x axis labels event listener
+        ylabelsGroup.selectAll("text")
+        .on("click", function() {
+        // get value of selection
+            var value = d3.select(this).attr("value");
+            if (value !== yLabelSelected) {
+
+                // replaces chosenXAxis with value
+                yLabelSelected = value;
+            
+                // changes classes to change bold text
+                switch (yLabelSelected)            
+                {
+                    case "HealthCare" :
+                        healthLabel
+                            .classed("active", true)
+                            .classed("inactive", false);
+                        smokeLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        obeseLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        break;
+                    case "Smoke" :
+                        healthLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        smokeLabel
+                            .classed("active", true)
+                            .classed("inactive", false);
+                        obeseLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        break;
+                    case "Obese" :
+                        healthLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        smokeLabel
+                            .classed("active", false)
+                            .classed("inactive", true);
+                        obeseLabel
+                            .classed("active", true)
+                            .classed("inactive", false);
+                        break;
+                }
+                CreateChart();
+            }
+        });
 
 
         // add x label for the poverty
