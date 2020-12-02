@@ -87,7 +87,7 @@ d3.csv("/assets/data/data.csv").then(function(healthcareIndicators) {
     // Step 6: Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
-      .attr("class", "tooltip")
+      .attr("class", "d3-tip")
       .offset([80, -70])
       .html(function(d) {
         return (`<h5>${d.state}</h5> <hr/> Poverty : ${d.poverty}<br>Health Care: ${d.healthcare}`);

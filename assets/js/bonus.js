@@ -111,12 +111,12 @@ function XYScale(data, chosenAxis, axisType) {
   function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
     var toolTip = d3.tip()
-      .attr("class", "tooltip")
-      .offset([80, -80])
+      .attr("class", "d3-tip")
+      .offset([-8, 0])
       .html(function(d) {
         return (`<h5>${d.state}</h5> <hr/> ${chosenXAxis} : ${d[chosenXAxis]}<br>${chosenYAxis}: ${d[chosenYAxis]}`);
       });
-  
+     console.log(toolTip);
     circlesGroup.call(toolTip);
   
     circlesGroup.on("mouseover", function(data) {
@@ -206,8 +206,8 @@ function XYScale(data, chosenAxis, axisType) {
     // Step 6: Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
-    .attr("class", "tooltip")
-    .offset([80, -80])
+    .attr("class", "d3-tip")
+    .offset([-8, 0])
     .html(function(d) {
         return (`<h5>${d.state}</h5> <hr/> ${chosenXAxis} : ${d[chosenXAxis]}<br>${chosenYAxis}: ${d[chosenYAxis]}`);
     });
