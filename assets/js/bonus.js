@@ -116,7 +116,7 @@ function XYScale(data, chosenAxis, axisType) {
       .html(function(d) {
         return (`<h5>${d.state}</h5> <hr/> ${chosenXAxis} : ${d[chosenXAxis]}<br>${chosenYAxis}: ${d[chosenYAxis]}`);
       });
-     console.log(toolTip);
+    
     circlesGroup.call(toolTip);
   
     circlesGroup.on("mouseover", function(data) {
