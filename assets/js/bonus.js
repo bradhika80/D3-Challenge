@@ -227,14 +227,12 @@ function XYScale(data, chosenAxis, axisType) {
     });
 
 
-    // reference  :- https://www.dashingd3js.com/lessons/making-dynamic-scales-and-axes
-
     // Create axes labels
 
-    // add y label for the healthcare
-
+    // create y labels group
     var ylabelsGroup = chartGroup.append("g");
-    
+
+     // add y label for the healthcare
     var healthLabel = ylabelsGroup.append("text")
                     .attr("transform", "rotate(-90)")
                     .attr("y", 0 - margin.left + 100)
